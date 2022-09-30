@@ -40,7 +40,6 @@ class ImportCategoryUseCase {
     }
 
     async execute(file: Express.Multer.File): Promise<void> {
-        console.log(file);
         const categories = await this.loadCategories(file);
         categories.map(async (category) => {
             const { name, description } = category;
