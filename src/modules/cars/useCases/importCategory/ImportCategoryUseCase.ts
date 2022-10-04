@@ -8,6 +8,14 @@ interface IImportCategory {
     description: string;
 }
 
+function clearDirectory(file) {
+    fs.readdirSync(file.destination).forEach((f) => {
+        if (file.filename !== f) {
+            fs.rmSync(`${file.destination}/${f}`);
+        }
+    });
+}
+
 class ImportCategoryUseCase {
     constructor(private categoriesRepository: ICategoriesRepository) {}
 
@@ -30,7 +38,7 @@ class ImportCategoryUseCase {
                     });
                 })
                 .on("end", () => {
-                    fs.promises.unlink(file.path);
+                    clearDirectory(file);
                     resolve(categories);
                 })
                 .on("error", (err) => {
